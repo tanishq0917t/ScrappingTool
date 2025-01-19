@@ -5,6 +5,8 @@ from app.database import LocalStorage
 from app.caching import Cache
 
 router = APIRouter()
+storage = LocalStorage()
+existing_data = storage.load_data()
 
 @router.post("/scrape")
 def scrape(
@@ -13,24 +15,29 @@ def scrape(
     proxy: str = Query(None, description="Proxy string for scraping"),
 ):
     print(f"Base URL: {base_url}")
+    if base_url[-1]=='/':
+        base_url=base_url[0:-1]
     scraper = Scraper(base_url=base_url, proxy=proxy)
-    storage = LocalStorage()
     cache = Cache()
 
     scraped_products = []
-    existing_data = {item["product_title"]: item for item in storage.load_data()}
+    
+    print(len(existing_data))
 
     for page in range(1, pages + 1):
         for product in scraper.scrape_page(page):
             cached_price = cache.get(product["product_title"])
-            print("----------------")
-            print(cached_price)
-            if cached_price and float(cached_price) == product["product_price"]:
+            if cached_price and cached_price == product["product_price"]:
+                print("Continuing")
                 continue
 
             cache.set(product["product_title"], product["product_price"])
-            if product["product_title"] not in existing_data:
-                scraped_products.append(product)
+            if product["product_title"] in existing_data:
+                del existing_data[product["product_title"]]
+            scraped_products.append(product)
+            print("Adding")
+            print(f"Cached: {cached_price}   |   Price: {product['product_price']}")
+            existing_data[product["product_title"]]=product
 
     storage.save_data(scraped_products)
     print(f"Scraped {len(scraped_products)} new products.")

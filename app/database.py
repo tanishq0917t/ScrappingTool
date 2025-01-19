@@ -1,16 +1,19 @@
 import json
+from .MongoConnection import MongoCollection
 
 class LocalStorage:
     def __init__(self, file_path: str = "products.json"):
-        self.file_path = file_path
+        self.collection=MongoCollection().getCollection()
 
     def load_data(self):
-        try:
-            with open(self.file_path, "r") as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return []
+        print("Loading Data.......................")
+        documents = self.collection.find({}, {"_id": 0})
+        return {doc["product_title"]: doc for doc in documents}
 
     def save_data(self, data):
-        with open(self.file_path, "w") as f:
-            json.dump(data, f, indent=4)
+        for item in data:
+            self.collection.update_one(
+                {"product_title": item["product_title"]},
+                {"$set": item},
+                upsert=True
+            )

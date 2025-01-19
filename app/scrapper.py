@@ -10,7 +10,7 @@ class Scraper:
         self.delay = delay
 
     def scrape_page(self, page_number: int):
-        url = f"{self.base_url}?page={page_number}"
+        url = f"{self.base_url}/page/{page_number}"
         print(url)
         for attempt in range(self.retries):
             try:
