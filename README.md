@@ -32,6 +32,7 @@ Application for scrapping data from an e-commerce website via API, below is the 
 4. There are a fixed number of retries if the target page is not reachable, after which it will move to the next page.
 
 ### How to use?
+0. Specify mongoDB username, password and clusterID in <b>config.json</b> file before starting the application, also create a database and products collection under it.
 1. Start the server using the below command\
    ```uvicorn app.main:app --reload```
 2. To scrap pages by specifying the target URL, number of pages to scrap, and static token for authentication, use the below command\
