@@ -41,3 +41,17 @@ Assuming both the client and server are on the same machine.
 3. For example, I want to scrap data from <b>dentalstall.com/shop/</b> and targeting 7 pages so URL will be\
    ```curl -X POST "http://127.0.0.1:8000/scrape?base_url=https://dentalstall.com/shop/&pages=7" -H "token: mysecrettoken"```
 <b> Note: Specifying base_url and pages are mandatory</b>
+
+### Screenshots
+1. Clearing cache before startup of application\
+   <img src="https://github.com/tanishq0917t/ScrappingTool/blob/main/screenshots/Clear_cache.png">
+2. Clear database before startup of application\
+   <img src="https://github.com/tanishq0917t/ScrappingTool/blob/main/screenshots/Clear_database.png">
+3. Starting the server.\
+   <img src="https://github.com/tanishq0917t/ScrappingTool/blob/main/screenshots/Server_Startup.png">
+4. Sending the request to scrap.\
+   <img src="https://github.com/tanishq0917t/ScrappingTool/blob/main/screenshots/srcap1.png">
+5. Db after request.\
+   <img src="https://github.com/tanishq0917t/ScrappingTool/blob/main/screenshots/db_post_req.png">
+
+<b>Note-: It shows 3 updated records, because of duplicate products with different prices on different pages.</b>
